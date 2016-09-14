@@ -22,7 +22,7 @@ PACKAGE_CATALOG=${PROJECT_NAME}-${VERSION}
 JAR_NAME="${PACKAGE_CATALOG}.jar"
 
 # remove src/app-deployment-helpers to avoid license check failure
-rm -rf src/app-deployment-helpers
+rm -rf src/app-deployment-lib
 
 # build project
 mvn clean package -Dmaven.test.skip=true
