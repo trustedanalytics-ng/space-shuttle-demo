@@ -55,10 +55,10 @@ class Config(object):
           can't run raised.
         """
         if external_gateway:
-                return 'wss://' + external_gateway + '/ws'
+                return 'ws://' + external_gateway + '/ws'
         try:
             service_config = json.loads(os.environ[VCAP_SERVICES])
-            return 'wss://' + service_config['gateway'][0]['credentials']['url'] + '/ws'
+            return 'ws://' + service_config['gateway'][0]['credentials']['url'] + '/ws'
         except KeyError:
             raise ConfigEnvError('Environment variable that should contain '
                                  'configuration is missing or incorrect.')
