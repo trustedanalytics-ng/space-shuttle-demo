@@ -18,12 +18,10 @@ package org.trustedanalytics.dataproviders;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.process.DataConsumer;
 
 import java.security.SecureRandom;
 
-@Profile("random")
 public class RandomDataProvider {
     private static final Logger LOG = LoggerFactory.getLogger(RandomDataProvider.class);
     private final DataConsumer dataConsumer;
@@ -41,7 +39,7 @@ public class RandomDataProvider {
         }
         return randomArray;
     }
-
+    
     public void init() {
         new Thread(() -> {
             LOG.info("start consumer thread");

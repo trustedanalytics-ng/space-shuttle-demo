@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 Intel Corporation
+ * Copyright (c) 2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package org.trustedanalytics.exceptions;
+package org.trustedanalytics.scoringengine;
 
-import org.springframework.cloud.CloudException;
+@FunctionalInterface
+public interface ScoringEngine {
 
-public class CloudConnectorNotDefinedException extends CloudException {
+    boolean score(float[] data);
 
-    public CloudConnectorNotDefinedException(String message, Throwable e) {
-        super(message, e);
-    }
 }

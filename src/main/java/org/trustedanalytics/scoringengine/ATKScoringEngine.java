@@ -24,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.stream.Collectors;
 
-public class ATKScoringEngine {
+public class ATKScoringEngine implements ScoringEngine {
 
     private static final Logger LOG = LoggerFactory.getLogger(ATKScoringEngine.class);
 
@@ -34,7 +34,8 @@ public class ATKScoringEngine {
         this.scoringEngineUrl = scoringEngineUrl;
     }
 
-    public Boolean score(float[] data) {
+    @Override
+    public boolean score(float[] data) {
         String commaSeparatedNumbers = convertToCommaSeparated(data);
         String url = getUrl() + commaSeparatedNumbers;
         Float result;

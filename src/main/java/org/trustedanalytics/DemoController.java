@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.trustedanalytics.process.ProcessConsumer;
-import org.trustedanalytics.scoringengine.ATKScoringEngine;
+import org.trustedanalytics.scoringengine.ScoringEngine;
 
 @RestController
 public class DemoController {
@@ -29,7 +29,7 @@ public class DemoController {
     private String message;
 
     @Autowired
-    ATKScoringEngine scoring;
+    ScoringEngine scoring;
 
     @Autowired ProcessConsumer process;
 

@@ -23,19 +23,12 @@ import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 import kafka.serializer.StringDecoder;
 import kafka.utils.VerifiableProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.Cloud;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.dataproviders.KafkaDataProvider;
 import org.trustedanalytics.process.DataConsumer;
 import org.trustedanalytics.process.FeatureVectorDecoder;
-import org.trustedanalytics.serviceinfo.GatewayServiceInfo;
-import org.trustedanalytics.serviceinfo.GatewayServiceInfoCreator;
-import org.trustedanalytics.serviceinfo.ZookeeperServiceInfo;
-import org.trustedanalytics.serviceinfo.ZookeeperServiceInfoCreator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,22 +36,31 @@ import java.util.Map;
 import java.util.Properties;
 
 @Configuration
-@Profile("kafka")
-public class KafkaConfiguration {
+@Profile({"kafka-input", "services-all"})
+public class KafkaDataProviderConfig {
 
-    @Autowired
-    private Cloud cloud;
+    // TODO - KAFKA
+    @Bean
+    public String zookeeperCluster() {
+        return "http://fixMe";
+    }
 
-    @Value("${consumer.group}")
-    private String consumerGroup;
+    // TODO - KAFKA
+    @Bean
+    public String topicName() {
+        return "fixMe-Topic";
+    }
+
+    // TODO - KAFKA
+    @Bean
+    public String consumerGroup() {
+        return "fixMe";
+    }
 
     @Bean
-    protected KafkaStream<String, float[]> kafkaStream() {
-
-        final String topicName = retrieveTopicNameFromGatewayAddress(gatewayUrl());
-
+    protected KafkaStream<String, float[]> kafkaStream(String topicName, String zookeeperCluster, String consumerGroup) {
         ConsumerConnector consumerConnector =
-                Consumer.createJavaConsumerConnector(consumerConfig());
+                Consumer.createJavaConsumerConnector(consumerConfig(zookeeperCluster, consumerGroup));
         Map<String, Integer> topicCounts = new HashMap<>();
         topicCounts.put(topicName, 1);
         VerifiableProperties emptyProps = new VerifiableProperties();
@@ -78,9 +80,9 @@ public class KafkaConfiguration {
         return new KafkaDataProvider(dataConsumer, kafkaStream);
     }
 
-    private ConsumerConfig consumerConfig() {
+    private ConsumerConfig consumerConfig(String zookeeperCluster, String consumerGroup) {
         Properties props = new Properties();
-        props.put("zookeeper.connect", zookeeperCluster());
+        props.put("zookeeper.connect", zookeeperCluster);
         props.put("group.id", consumerGroup);
         props.put("zookeeper.session.timeout.ms", "1000");
         props.put("zookeeper.sync.time.ms", "200");
@@ -88,17 +90,4 @@ public class KafkaConfiguration {
         return new ConsumerConfig(props);
     }
 
-    private String retrieveTopicNameFromGatewayAddress(String gatewayUrl) {
-        return gatewayUrl.substring(0, gatewayUrl.indexOf('.'));
-    }
-
-    private String zookeeperCluster() {
-        ZookeeperServiceInfo zookeeperServiceInfo = (ZookeeperServiceInfo) cloud.getServiceInfo(ZookeeperServiceInfoCreator.ZOOKEEPER_ID);
-        return zookeeperServiceInfo.getCluster();
-    }
-
-    private String gatewayUrl() {
-        GatewayServiceInfo gatewayServiceInfo = (GatewayServiceInfo) cloud.getServiceInfo(GatewayServiceInfoCreator.GATEWAY_ID);
-        return gatewayServiceInfo.getUri();
-    }
 }

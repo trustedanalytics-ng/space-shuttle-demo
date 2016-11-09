@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 Intel Corporation
+ * Copyright (c) 2016 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,41 +17,23 @@ package org.trustedanalytics.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.process.DataConsumer;
 import org.trustedanalytics.process.ProcessConsumer;
-import org.trustedanalytics.scoringengine.ATKScoringEngine;
+import org.trustedanalytics.scoringengine.ScoringEngine;
 import org.trustedanalytics.storage.DataStore;
-import org.trustedanalytics.storage.InfluxDataStore;
-import org.trustedanalytics.storage.StoreProperties;
 
 @Configuration
-@Profile("cloud")
-public class Config {
+@Profile({"common", "dummy-all", "services-all"})
+public class CommonConfig {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Config.class);
-
-    @Autowired
-    private String scoringEngineUrl;
+    private static final Logger LOG = LoggerFactory.getLogger(CommonConfig.class);
 
     @Bean
-    public DataStore store(StoreProperties storeProperties) {
-        LOG.debug("influx config: " + storeProperties);
-        LOG.info("Connecting to influxdb instance on " + storeProperties.getFullUrl());
-        return new InfluxDataStore(storeProperties);
-    }
-
-    @Bean
-    protected ATKScoringEngine scoringEngine() {
-        LOG.info("Creating ATKScoringEngline with url: " + scoringEngineUrl);
-        return new ATKScoringEngine(scoringEngineUrl);
-    }
-
-    @Bean
-    public ProcessConsumer dataConsumer(ATKScoringEngine scoringEngine, DataStore store) {
+    public ProcessConsumer dataConsumer(ScoringEngine scoringEngine, DataStore store) {
         return new DataConsumer(scoringEngine::score, store::saveClass, store::saveFeatures);
     }
+
 }

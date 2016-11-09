@@ -13,21 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.trustedanalytics.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.trustedanalytics.dataproviders.RandomDataProvider;
-import org.trustedanalytics.process.DataConsumer;
+import org.trustedanalytics.scoringengine.ATKScoringEngine;
+import org.trustedanalytics.scoringengine.ScoringEngine;
 
 @Configuration
-@Profile("random")
-public class RandomConfiguration {
+@Profile({"atk-scoring", "services-all"})
+public class ATKScoringEngineConfig {
 
-    @Bean(initMethod = "init")
-    public RandomDataProvider randomDataProvider(DataConsumer dataConsumer) {
-        return new RandomDataProvider(dataConsumer);
+    private static final Logger LOG = LoggerFactory.getLogger(ATKScoringEngineConfig.class);
+
+    // TODO - SCORING ENGINE
+    @Bean
+    public String scoringEngineUrl() {
+        return "http://fixMe";
     }
+
+    // TODO
+    @Bean
+    protected ScoringEngine scoringEngine() {
+        LOG.info("Creating ATKScoringEngine");
+        return new ATKScoringEngine(scoringEngineUrl());
+    }
+
 }
