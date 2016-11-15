@@ -26,7 +26,6 @@ import org.trustedanalytics.scoringengine.ScoringEngine;
 import org.trustedanalytics.storage.DataStore;
 
 @Configuration
-@Profile({"common", "dummy-all", "services-all"})
 public class CommonConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommonConfig.class);
@@ -35,5 +34,4 @@ public class CommonConfig {
     public ProcessConsumer dataConsumer(ScoringEngine scoringEngine, DataStore store) {
         return new DataConsumer(scoringEngine::score, store::saveClass, store::saveFeatures);
     }
-
 }

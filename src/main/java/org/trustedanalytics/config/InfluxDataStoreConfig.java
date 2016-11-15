@@ -17,6 +17,7 @@ package org.trustedanalytics.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -33,18 +34,28 @@ public class InfluxDataStoreConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(InfluxDataStoreConfig.class);
 
-    // TODO - INFLUXDB
+    @Value("${influxdb.username}")
+    private String influxUsername;
+
+    @Value("${influxdb.password}")
+    private String influxPassword;
+
+    @Value("${influxdb.service.name}")
+    private String influxHostname;
+
+    @Value("${influxdb.port}")
+    private String influxPort;
+
     @Bean
     public StoreProperties storeProperties() {
         Map configuration = new HashMap<String, Object>();
-        configuration.put("username", "test");
-        configuration.put("password", "test");
-        configuration.put("hostname", "localhost");
-        configuration.put("port", "8080");
+        configuration.put("username", influxUsername);
+        configuration.put("password", influxPassword);
+        configuration.put("hostname", influxHostname);
+        configuration.put("port", influxPort);
         return new StoreProperties(configuration);
     }
 
-    // TODO
     @Bean
     public DataStore store(StoreProperties storeProperties) {
         LOG.debug("influx config: " + storeProperties);

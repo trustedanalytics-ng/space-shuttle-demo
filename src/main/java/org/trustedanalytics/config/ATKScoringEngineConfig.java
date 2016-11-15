@@ -17,6 +17,7 @@ package org.trustedanalytics.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -29,17 +30,13 @@ public class ATKScoringEngineConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(ATKScoringEngineConfig.class);
 
-    // TODO - SCORING ENGINE
-    @Bean
-    public String scoringEngineUrl() {
-        return "http://fixMe";
-    }
+    @Value("${atkscoring.url}")
+    private String scoringEngineUrl;
 
-    // TODO
     @Bean
     protected ScoringEngine scoringEngine() {
         LOG.info("Creating ATKScoringEngine");
-        return new ATKScoringEngine(scoringEngineUrl());
+        return new ATKScoringEngine(scoringEngineUrl);
     }
 
 }

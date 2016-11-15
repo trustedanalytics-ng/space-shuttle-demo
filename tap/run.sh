@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-exec java -jar space-shuttle-demo.jar --server.port=80 --spring.profiles.active=dummy-all
+java -jar space-shuttle-demo.jar --server.port=80 --spring.profiles.active=dummy-input,dummy-scoring,influx-storage

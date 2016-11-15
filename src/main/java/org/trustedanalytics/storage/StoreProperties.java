@@ -36,21 +36,16 @@ public class StoreProperties {
     private String defaultTimeLimit;
     private String databaseName;
 
-    public StoreProperties(Map<String, Object> serviceCredentials) {
+    public StoreProperties(Map<String, String> serviceCredentials) {
         this(serviceCredentials, DEFAULT_GROUPING_INTERVAL, DEFAULT_TIME_LIMIT, DATABASE_NAME);
     }
 
-    public StoreProperties(Map<String, Object> serviceCredentials, String defaultGroupingInterval,
+    public StoreProperties(Map<String, String> serviceCredentials, String defaultGroupingInterval,
                            String defaultTimeLimit, String databaseName) {
-        this.baseUrl = URI_SCHEME + (String) serviceCredentials.get("hostname");
-        Map<String, Object> ports = (Map<String, Object>) serviceCredentials.get("ports");
-        if (ports != null && ports.containsKey("8086/tcp")) {
-            this.apiPort = (String) ports.get("8086/tcp");
-        } else {
-            this.apiPort = DEFAULT_API_PORT;
-        }
-        this.username = (String) serviceCredentials.get("username");
-        this.password = (String) serviceCredentials.get("password");
+        this.baseUrl = URI_SCHEME + serviceCredentials.get("hostname");
+        this.apiPort = serviceCredentials.get("port");
+        this.username = serviceCredentials.get("username");
+        this.password = serviceCredentials.get("password");
         this.defaultGroupingInterval = defaultGroupingInterval;
         this.defaultTimeLimit = defaultTimeLimit;
         this.databaseName = databaseName;

@@ -1,0 +1,7 @@
+services.bound:
+  influxdb088: service-1
+
+service-1.influxdb:
+  username: root
+  password: root
+  service.name: localhost

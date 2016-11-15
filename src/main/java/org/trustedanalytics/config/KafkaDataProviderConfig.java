@@ -23,6 +23,8 @@ import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 import kafka.serializer.StringDecoder;
 import kafka.utils.VerifiableProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -39,26 +41,17 @@ import java.util.Properties;
 @Profile({"kafka-input", "services-all"})
 public class KafkaDataProviderConfig {
 
-    // TODO - KAFKA
-    @Bean
-    public String zookeeperCluster() {
-        return "http://fixMe";
-    }
+    @Value("${gateway.zookeeper.uri}")
+    private String zookeeperCluster;
 
-    // TODO - KAFKA
-    @Bean
-    public String topicName() {
-        return "fixMe-Topic";
-    }
+    @Value("${gateway.pub.topic}")
+    private String topicName;
 
-    // TODO - KAFKA
-    @Bean
-    public String consumerGroup() {
-        return "fixMe";
-    }
+    @Value("${consumer.group}")
+    private String consumerGroup;
 
     @Bean
-    protected KafkaStream<String, float[]> kafkaStream(String topicName, String zookeeperCluster, String consumerGroup) {
+    protected KafkaStream<String, float[]> kafkaStream() {
         ConsumerConnector consumerConnector =
                 Consumer.createJavaConsumerConnector(consumerConfig(zookeeperCluster, consumerGroup));
         Map<String, Integer> topicCounts = new HashMap<>();

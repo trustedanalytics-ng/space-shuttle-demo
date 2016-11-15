@@ -1,0 +1,1 @@
+spring.profiles.include: dummy-scoring,dummy-storage,dummy-input

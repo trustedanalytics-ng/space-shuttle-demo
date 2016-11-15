@@ -1,0 +1,6 @@
+services.bound:
+  gateway: service-1
+
+service-1.gateway:
+  zookeeper.uri: localhost
+  pub.topic: messages
