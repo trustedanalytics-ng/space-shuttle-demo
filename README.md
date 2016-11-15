@@ -18,7 +18,33 @@ This page provides instructions for using the Analytics Toolkit space shuttle de
 * The space-shuttle-demo application fetches anomalies (classes different than 1) several times per minute from InfluxDB and then displays them.
 
 ## Deploying application to TAP
-   
+
+### Manual deployment (for TAP 0.8+)
+To upload sample application 'space-shuttle-demo' to Platform you can use bash script deploy.sh
+
+Params:
+```$1 - path to tap-cli directory```
+
+How to run:
+```./deploy.sh <path_to_tap_cli_directory> E.g.: ./deploy.sh /home/centos/TAP-0.8```
+
+How it works:
+This script deploy sample application 'space-shuttle-demo' to Trusted Analytics
+Platform (TAP) using TAP CLI (Command Line Interface)
+
+* Login to TAP instance using TAP CLI:
+```./<path-to-tap>/tap login <http://-https://-instance-address> <username> <password>```
+
+* Create needed service (influxdb and gateway):
+    *This step will be done automatically by deploy.sh script*
+```./<path-to-tap>/tap cs gateway     free space-shuttle-gateway```
+```./<path-to-tap>/tap cs influxdb088 free space-shuttle-db```
+
+* Push application to TAP Platform
+    *This step will be done automatically by deploy.sh script*
+```./<path-to-tap>/tap push space-shuttle-demo.tar.gz```
+
+
 ### Manual deployment
 1. Upload the model to HDFS: 
    * Download the pre-packaged model from: [https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar](https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar)
