@@ -44,7 +44,7 @@
 
 TAP=$1/tap
 
-if [ -z "$TAP" ]; then
+if [ -z "$1" ]; then
     echo -e "Usage: ./deploy.sh <path_to_tap_cli_directory>\nE.g.: ./deploy.sh /home/centos/TAP-0.8\n "
     exit
 fi
@@ -92,8 +92,3 @@ fi
 
 touch .log
 echo -e "\nSuccessful"
-
-if [ $? -nq 0 ]; then
-    echo -e "\nbut cannot double some services or applications"
-    exit 1
-fi
