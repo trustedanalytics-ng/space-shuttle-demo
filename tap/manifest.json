@@ -1,8 +1,9 @@
 {
-    "type":"JAVA",
-    "name":"space-shuttle-influx-storage-dummy-other",
-    "instances":1,
-    "bindings":[
-        "space-shuttle-influxdb088"
-    ]
+  "type":"JAVA",
+  "name":"space-shuttle-demo",
+  "instances":1,
+  "bindings":[
+    "space-shuttle-gateway",
+    "space-shuttle-influxdb088"
+  ]
 }
