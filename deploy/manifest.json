@@ -4,6 +4,6 @@
   "instances":1,
   "bindings":[
     "space-shuttle-gateway",
-    "space-shuttle-influxdb088"
+    "space-shuttle-db"
   ]
 }
