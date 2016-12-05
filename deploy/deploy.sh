@@ -69,7 +69,7 @@ function checkStatus() {
 echo "Creating gateway instance..."
 checkStatus "svcs" "space-shuttle-gateway"
 if [ $? -eq 0 ]; then
-    $TAP cs gateway free space-shuttle-gateway
+    $TAP cs gateway single space-shuttle-gateway
     checkReturnCode $?
 fi
 
@@ -77,7 +77,7 @@ fi
 echo "Creating influx-db instance..."
 checkStatus "svcs" "space-shuttle-db"
 if [ $? -eq "0" ]; then
-    $TAP cs influxdb088 free space-shuttle-db
+    $TAP cs influxdb-088 single-small space-shuttle-db
     checkReturnCode $?
 fi
 
