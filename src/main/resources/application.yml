@@ -5,9 +5,9 @@ logging.level:
 
 atkscoring.url: ${${services.bound.atkscoring}.atkscoring.url}
 
-influxdb.username: ${${services.bound.influxdb088}.influxdb.username}
-influxdb.password: ${${services.bound.influxdb088}.influxdb.password}
-influxdb.service.name: ${${services.bound.influxdb088}.influxdb.service.name}
+influxdb.username: ${${services.bound.influxdb.088}.influxdb.username}
+influxdb.password: ${${services.bound.influxdb.088}.influxdb.password}
+influxdb.service.name: ${${services.bound.influxdb.088}.influxdb.service.name}
 influxdb.port: 8086
 
 gateway.zookeeper.uri: ${${services.bound.gateway}.gateway.zookeeper.uri}

@@ -1,5 +1,5 @@
 services.bound:
-  influxdb088: service-1
+  influxdb.088: service-1
 
 service-1.influxdb:
   username: root
