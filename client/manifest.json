@@ -1,0 +1,8 @@
+{
+    "type": "PYTHON2.7",
+    "name": "space-shuttle-demo-client",
+    "instances": 1,
+    "bindings": [
+	"space-shuttle-gateway"
+    ]
+}

@@ -110,10 +110,11 @@ To determine the URL of the gateway you are going to send data to:
 1. Copy the application URL.
 
 ### Running Python client locally:
+1. Create environment ‘virtualenv env‘
+1. Activate created virtualenv: ‘source env/bin/activate‘
+1. Run ‘./pack.sh‘ script to prepare vendor.
 1. Go to: ‘client/’
-1. Run tox: ‘tox’
-1. Activate created virtualenv: ‘. .tox/py27/bin/activate’
-1. Run: ‘python space_shuttle_client.py --gateway-url <gateway_url>’
+1. Run script: ‘./run.sh <gateway_url>’
 
 ##Creating TAP Analytics Toolkit model
 To create the model for the Scoring Engine, follow these steps:

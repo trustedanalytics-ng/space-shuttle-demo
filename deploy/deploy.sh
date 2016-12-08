@@ -82,13 +82,21 @@ if [ $? -eq "0" ]; then
 fi
 
 
-echo "Pushing application..."
+echo "Pushing application space-shuttle-demo..."
 checkStatus "apps" "space-shuttle-demo"
 if [ $? -eq 0 ]; then
     $TAP push space-shuttle-demo.tar.gz
     checkReturnCode $?
 fi
 
+cd client
+
+echo "Pushing application space-shuttle-demo-client..."
+checkStatus "apps" "space-shuttle-demo-client"
+if [ $? -eq 0 ]; then
+    $TAP push space-shuttle-demo-client.tar.gz
+    checkReturnCode $?
+fi
 
 touch .log
 echo -e "\nSuccessful"

@@ -18,11 +18,8 @@ set -e
 
 VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\[' | tail -1)
 PROJECT_NAME=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.name | grep -v '\[' | tail -1)
-PACKAGE_CATALOG=${PROJECT_NAME}-${VERSION}
-JAR_NAME="${PACKAGE_CATALOG}.jar"
-
-# remove src/app-deployment-helpers to avoid license check failure
-rm -rf src/app-deployment-lib
+PACKAGE_CATALOG="package-target"
+JAR_NAME="${PROJECT_NAME}-${VERSION}.jar"
 
 # build project
 mvn clean package -Dmaven.test.skip=true
@@ -31,49 +28,20 @@ mvn clean package -Dmaven.test.skip=true
 rm -rf ${PACKAGE_CATALOG}
 mkdir ${PACKAGE_CATALOG}
 
-# files to package
-cp manifest.yml ${PACKAGE_CATALOG}
-cp --parents target/${JAR_NAME} ${PACKAGE_CATALOG}
+echo "Create space-shuttle-demo.tar.gz package"
+tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo.tar.gz -C target ${JAR_NAME} -C ../deploy run.sh deploy.sh manifest.json
+echo "Space-shuttle-demo package created successfully"
 
-BASE_DIR=`pwd`
-cp --parents atkmodelgenerator/atk_model_generator.py ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents atkmodelgenerator/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
+# create space-shuttle-demo-client package
+echo "Create space-shuttle-demo-client.tar.gz package"
+pip install -r client/requirements.txt -t client/vendor
+touch client/vendor/zope/__init__.py
+tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo-client.tar.gz -C client/ vendor/ client_config.py manifest.json requirements.txt run.sh shuttle_scale_cut_val.csv space_shuttle_client.py
 
-# package deployment script
-rm -rf deploy/vendor
-mkdir deploy/vendor
-pip install --exists-action=w --download deploy/vendor -r deploy/requirements.txt
-cp --parents deploy/deploy.py ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents deploy/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents deploy/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents -r deploy/vendor ${BASE_DIR}/${PACKAGE_CATALOG}
+echo "Space-shuttle-demo-client package created successfully"
 
-# space shuttle client
-rm -rf client/vendor
-mkdir client/vendor
-pip install --exists-action=w --download client/vendor -r client/requirements.txt --no-use-wheel
-cp --parents -r client/vendor ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/space_shuttle_client.py ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/client_config.py ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/tox.ini ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/requirements.txt ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/manifest.yml ${BASE_DIR}/${PACKAGE_CATALOG}
-cp --parents client/*.csv ${BASE_DIR}/${PACKAGE_CATALOG}
+# remove unused files
+rm -Rf client/vendor
 
-# download scoring engine model
-wget https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar
-cp space-shuttle-model.tar ${BASE_DIR}/${PACKAGE_CATALOG}
+echo "Package for $PROJECT_NAME project in version $VERSION has been prepared."
 
-# prepare build manifest
-echo "commit_sha=$(git rev-parse HEAD)" > ${PACKAGE_CATALOG}/build_info.ini
-
-# create zip package
-cd ${PACKAGE_CATALOG}
-rm -f ../${PROJECT_NAME}-${VERSION}.zip
-zip -r ../${PROJECT_NAME}-${VERSION}.zip *
-cd ..
-
-# remove tmp catalog
-rm -r ${PACKAGE_CATALOG}
-
-echo "Zip package for $PROJECT_NAME project in version $VERSION has been prepared."
