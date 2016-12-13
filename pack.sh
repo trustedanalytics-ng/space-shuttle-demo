@@ -19,29 +19,29 @@ set -e
 VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\[' | tail -1)
 PROJECT_NAME=$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.name | grep -v '\[' | tail -1)
 PACKAGE_CATALOG="package-target"
-JAR_NAME="${PROJECT_NAME}-${VERSION}.jar"
+MVN_JAR_NAME="${PROJECT_NAME}-${VERSION}.jar"
+TARGET_JAR_NAME="${PROJECT_NAME}.jar"
 
 # build project
 mvn clean package -Dmaven.test.skip=true
 
-# create tmp catalog
+# create target catalog
 rm -rf ${PACKAGE_CATALOG}
 mkdir ${PACKAGE_CATALOG}
 
-echo "Create space-shuttle-demo.tar.gz package"
-tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo.tar.gz -C target ${JAR_NAME} -C ../deploy run.sh deploy.sh manifest.json
-echo "Space-shuttle-demo package created successfully"
+# rename jar to be without version number 
+mv target/${MVN_JAR_NAME} target/${TARGET_JAR_NAME}
 
-# create space-shuttle-demo-client package
+echo "Create space-shuttle-demo.tar.gz package"
+tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo.tar.gz -C target ${TARGET_JAR_NAME} -C ../deploy run.sh deploy.sh manifest.json
+
 echo "Create space-shuttle-demo-client.tar.gz package"
 pip install -r client/requirements.txt -t client/vendor
-touch client/vendor/zope/__init__.py
+touch client/vendor/zope/__init__.py # resolve missing init file issue 
 tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo-client.tar.gz -C client/ vendor/ client_config.py manifest.json requirements.txt run.sh shuttle_scale_cut_val.csv space_shuttle_client.py
 
-echo "Space-shuttle-demo-client package created successfully"
-
 # remove unused files
-rm -Rf client/vendor
+rm -rf client/vendor
 
 echo "Package for $PROJECT_NAME project in version $VERSION has been prepared."
 
