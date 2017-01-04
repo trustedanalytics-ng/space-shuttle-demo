@@ -36,6 +36,7 @@ echo "Create space-shuttle-demo.tar.gz package"
 tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo.tar.gz -C target ${TARGET_JAR_NAME} -C ../deploy run.sh deploy.sh manifest.json
 
 echo "Create space-shuttle-demo-client.tar.gz package"
+mkdir -p client/vendor/zope
 pip install -r client/requirements.txt -t client/vendor
 touch client/vendor/zope/__init__.py # resolve missing init file issue 
 tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo-client.tar.gz -C client/ vendor/ client_config.py manifest.json requirements.txt run.sh shuttle_scale_cut_val.csv space_shuttle_client.py
