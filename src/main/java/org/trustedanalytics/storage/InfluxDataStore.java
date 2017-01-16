@@ -99,7 +99,7 @@ public class InfluxDataStore implements DataStore {
     @Override public Map<String, Map<Double, Integer>> getHistogram() {
         String query = "select HISTOGRAM(\"%s\", " + BUCKET_SIZE + ") from " + FEATURES_SERIE;
 
-        List<Map<Double, Integer>> queryResult = getHistogramColumns().stream().map(
+        List<Map<Double, Integer>> queryResult = getHistogramColumns().parallelStream().map(
             s -> String.format(query, s))
             .map(q -> store.query(properties.getDatabaseName(), q, TimeUnit.MILLISECONDS))
             .map(qr -> extractHistogramMaps(qr.get(0).getRows()))
@@ -110,7 +110,7 @@ public class InfluxDataStore implements DataStore {
     }
 
     private Map<Double, Integer> extractHistogramMaps(List<Map<String, Object>> data){
-        return data.stream().map(v -> new SpaceShuttleHistogramRecord(v)).collect(Collectors
+        return data.parallelStream().map(v -> new SpaceShuttleHistogramRecord(v)).collect(Collectors
             .toMap(SpaceShuttleHistogramRecord::getBucketStartRounded, SpaceShuttleHistogramRecord::getCountRounded));
     }
 
