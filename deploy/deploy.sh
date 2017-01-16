@@ -34,11 +34,11 @@
 # ./<path-to-tap>/tap login <http://-https://-instance-address> <username> <password>
 #
 # Create needed service (influxdb and gateway):
-# ./<path-to-tap>/tap cs gateway     free space-shuttle-gateway
-# ./<path-to-tap>/tap cs influxdb088 free space-shuttle-db
+# ./<path-to-tap>/tap service create --offering gateway --plan single --name space-shuttle-gateway
+# ./<path-to-tap>/tap service create --offering influxdb-088 --plan single --name space-shuttle-db
 #
 # Push application to TAP Platform
-# ./<path-to-tap>/tap push space-shuttle-demo.tar.gz
+# ./<path-to-tap>/tap application push --archive-path space-shuttle-demo.tar.gz
 #
 #
 
