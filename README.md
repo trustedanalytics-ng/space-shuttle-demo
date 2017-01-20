@@ -21,15 +21,18 @@ This page provides instructions for using the Analytics Toolkit space shuttle de
 * The space-shuttle-demo application fetches anomalies (classes different than 1) several times per minute from InfluxDB and then displays them.
 
 ## Deploying application to TAP
-To upload sample application 'space-shuttle-demo' to Platform you can use bash script *deploy.sh*. This script create needed services, upload application to platform and create bindings. If you want to upload application and create other service manually, you can use *TAP CLI*.  
+To upload sample application 'space-shuttle-demo' to Platform you can use bash script *deploy.sh* (is located in *deploy/* folder). This script create needed services, upload application to platform and create bindings. If you want to upload application and create other service manually, you can use *TAP CLI*.  
 
 **What I need?**
 * TAP CLI - TAP CLI is a command line client for TAP. For more information visit [tap-cli documentation][a75eded2]
   > You can download this tool from your TAP Instance (on TAP, please go to tab *App Development*)
 
 * Application package:
-  * Download source code of demo application then build app:
+  * Download source code of demo application, go to *space-shuttle-demo/* folder and then run command in this location to build app:
     `mvn package`
+  * Rename built app to *space-shuttle-demo.jar* from *space-shuttle-demo-<version_number>.jar*. This file is located in *target/* folder.
+    `mv <old_name> <new_name>`
+
   * Create a *manifest.json*
 
     ```
@@ -51,15 +54,27 @@ To upload sample application 'space-shuttle-demo' to Platform you can use bash s
     java -jar space-shuttle-demo.jar --server.port=80 --spring.profiles.active=kafka-input,dummy-scoring,influx-storage
     ```
   * Pack *run.sh* and *space-shuttle-demo.jar* into *space-shuttle-demo.tar.gz*
-  * Into this same folder, where *space-shuttle-demo.tar.gz* is stored, please copy *manifest.json*
+  * Into this same folder, where *space-shuttle-demo.tar.gz* is stored (it should be located in *target*), please copy *manifest.json*
   * You application package is complete
   ```
-  <work folder>
+  <work-folder/>
   |-- manifest.json
   |-- space-shuttle-demo.tar.gz
         |-- run.sh
         |-- space-shuttle-demo.jar
   ```
+
+    You can make another folder (ex. *work-folder/*) to store there, all needed files for deployment.
+
+    ```
+    <work-folder>
+    |-- tap-cli
+    |-- deploy.sh
+    |-- manifest.json
+    |-- space-shuttle-demo.tar.gz
+          |-- run.sh
+          |-- space-shuttle-demo.jar
+    ```
 
 ### Automatic deployment
 **How it works**:
@@ -99,6 +114,10 @@ Platform (TAP) using TAP CLI (Command Line Interface).
 ![](wikiimages/running-space-shuttle-demo.png)
 
 However, this contains dummy data (mocked data). If you want, you can train a new model, or upload another one prepared by Intel. To do this use the steps below:
+
+### FAQ
+#### What if on instance there's another space-shuttle-demo?
+If you want to install another demo application, you should change name of service (in *deploy.sh* script), bindings in *manifest.json* and names in *manifest.json* and *run.sh*.  
 
 #### Upload the model to HDFS:
    * Download the pre-packaged model from: [https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar](https://s3.amazonaws.com/trustedanalytics/v0.7.1/models/space-shuttle-model.tar)
@@ -158,4 +177,3 @@ For instructions on pushing the scoring engine to the platform, go [here](https:
 1. Make sure that both proper profile are active.
 1. ‘mvn spring-boot:run’
 1. In a web browser, enter ‘localhost:8090’
-
