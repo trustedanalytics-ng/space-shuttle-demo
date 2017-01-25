@@ -4,3 +4,9 @@ services.bound:
 service-1.gateway:
   zookeeper.uri: localhost
   pub.topic: messages
+
+gateway:
+  zookeeper.uri: ${${services.bound.gateway}.gateway.zookeeper.uri}
+  pub.topic: ${${services.bound.gateway}.gateway.pub.topic}
+
+consumer.group: ${random.uuid}

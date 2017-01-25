@@ -24,7 +24,7 @@ import org.trustedanalytics.dataproviders.RandomDataProvider;
 import org.trustedanalytics.process.DataConsumer;
 
 @Configuration
-@Profile({"dummy-input", "dummy-all"})
+@Profile({"random-input"})
 public class DummyDataProviderConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(DummyDataProviderConfig.class);

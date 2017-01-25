@@ -24,7 +24,7 @@ import org.trustedanalytics.storage.DataStore;
 import org.trustedanalytics.storage.DummyDataStore;
 
 @Configuration
-@Profile({"dummy-storage", "dummy-all"})
+@Profile({"null-storage"})
 public class DummyDataStoreConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(DummyDataStoreConfig.class);

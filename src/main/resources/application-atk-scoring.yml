@@ -2,4 +2,6 @@ services.bound:
   atkscoring: service-1
 
 service-1.atkscoring:
-  url: http://localhost:8090
+  url: localhost
+
+scoring.url: ${${services.bound.atkscoring}.atkscoring.url}

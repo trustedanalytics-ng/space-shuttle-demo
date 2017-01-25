@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Properties;
 
 @Configuration
-@Profile({"kafka-input", "services-all"})
+@Profile({"kafka-input"})
 public class KafkaDataProviderConfig {
 
     @Value("${gateway.zookeeper.uri}")

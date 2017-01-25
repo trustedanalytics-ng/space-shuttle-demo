@@ -5,3 +5,9 @@ service-1.influxdb:
   username: root
   password: root
   service.name: localhost
+
+influxdb:
+  username: ${${services.bound.influxdb.088}.influxdb.username}
+  password: ${${services.bound.influxdb.088}.influxdb.password}
+  service.name: ${${services.bound.influxdb.088}.influxdb.service.name}
+  port: 8086

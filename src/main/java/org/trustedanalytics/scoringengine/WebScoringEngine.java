@@ -24,13 +24,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.stream.Collectors;
 
-public class ATKScoringEngine implements ScoringEngine {
+public class WebScoringEngine implements ScoringEngine {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ATKScoringEngine.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WebScoringEngine.class);
 
     private String scoringEngineUrl;
 
-    public ATKScoringEngine(String scoringEngineUrl){
+    public WebScoringEngine(String scoringEngineUrl){
         this.scoringEngineUrl = scoringEngineUrl;
     }
 

@@ -21,22 +21,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.trustedanalytics.scoringengine.ATKScoringEngine;
-import org.trustedanalytics.scoringengine.ScoringEngine;
+import org.trustedanalytics.scoringengine.WebScoringEngine;
 
 @Configuration
-@Profile({"atk-scoring", "services-all"})
-public class ATKScoringEngineConfig {
+@Profile({"atk-scoring", "web-scoring"})
+public class WebScoringEngineConfig {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ATKScoringEngineConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WebScoringEngineConfig.class);
 
-    @Value("${atkscoring.url}")
+    @Value("${scoring.url}")
     private String scoringEngineUrl;
 
     @Bean
-    protected ScoringEngine scoringEngine() {
-        LOG.info("Creating ATKScoringEngine");
-        return new ATKScoringEngine(scoringEngineUrl);
+    protected WebScoringEngine webScoringEngine() {
+        LOG.info("Creating WebScoringEngine");
+        return new WebScoringEngine(scoringEngineUrl);
     }
 
 }

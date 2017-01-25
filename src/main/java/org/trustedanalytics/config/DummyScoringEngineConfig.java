@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Profile;
 import org.trustedanalytics.scoringengine.ScoringEngine;
 
 @Configuration
-@Profile({"dummy-scoring", "dummy-all"})
+@Profile({"random-scoring"})
 public class DummyScoringEngineConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(DummyScoringEngineConfig.class);

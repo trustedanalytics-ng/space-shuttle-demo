@@ -1,1 +1,1 @@
-spring.profiles.include: atk-scoring,influx-storage,kafka-input
+spring.profiles.include: web-scoring,influx-storage,kafka-input

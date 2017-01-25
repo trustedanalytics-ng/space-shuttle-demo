@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@Profile({"influx-storage", "services-all"})
+@Profile({"influx-storage"})
 public class InfluxDataStoreConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(InfluxDataStoreConfig.class);

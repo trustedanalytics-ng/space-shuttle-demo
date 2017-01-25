@@ -1,1 +1,1 @@
-spring.profiles.include: dummy-scoring,dummy-storage,dummy-input
+spring.profiles.include: random-scoring,null-storage,random-input

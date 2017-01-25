@@ -2,15 +2,3 @@ spring.profiles.active: dummy-all
 server.port: 8090
 logging.level:
   org.trustedanalytics: DEBUG
-
-atkscoring.url: ${${services.bound.atkscoring}.atkscoring.url}
-
-influxdb.username: ${${services.bound.influxdb.088}.influxdb.username}
-influxdb.password: ${${services.bound.influxdb.088}.influxdb.password}
-influxdb.service.name: ${${services.bound.influxdb.088}.influxdb.service.name}
-influxdb.port: 8086
-
-gateway.zookeeper.uri: ${${services.bound.gateway}.gateway.zookeeper.uri}
-gateway.pub.topic: ${${services.bound.gateway}.gateway.pub.topic}
-
-consumer.group: ${random.uuid}

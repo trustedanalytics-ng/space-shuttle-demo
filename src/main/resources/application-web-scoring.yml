@@ -1,0 +1,7 @@
+services.bound:
+  scoring.engine: service-1
+
+service-1.scoring.engine:
+  service.name: localhost
+
+scoring.url: ${${services.bound.scoring.engine}.scoring.engine.service.name}
