@@ -4,6 +4,7 @@
   "instances":1,
   "bindings":[
     "space-shuttle-gateway",
-    "space-shuttle-db"
+    "space-shuttle-db",
+    "space-shuttle-scoring-engine"
   ]
 }

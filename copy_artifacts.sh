@@ -30,6 +30,5 @@ cp client/manifest.json "$CLIENT_OUTPUT_DIR"
 cp package-target/space-shuttle-demo-client.tar.gz "$CLIENT_OUTPUT_DIR"
 cp deploy/manifest.json "$OUTPUT_DIR"
 cp deploy/deploy.sh "$OUTPUT_DIR"
+cp deploy/model.mar "$OUTPUT_DIR"
 cp package-target/space-shuttle-demo.tar.gz "$OUTPUT_DIR"
-
-

@@ -42,7 +42,8 @@ To upload sample application 'space-shuttle-demo' to Platform you can use bash s
       "instances":1,
       "bindings":[
         "space-shuttle-gateway",
-        "space-shuttle-db"
+        "space-shuttle-db",
+        "space-shuttle-scoring-engine"
       ]
     }
     ```
@@ -51,14 +52,15 @@ To upload sample application 'space-shuttle-demo' to Platform you can use bash s
     ```
     #!/usr/bin/env bash
 
-    java -jar space-shuttle-demo.jar --server.port=80 --spring.profiles.active=kafka-input,dummy-scoring,influx-storage
+    java -jar space-shuttle-demo.jar --server.port=80 --spring.profiles.active=kafka-input,web-scoring,influx-storage
     ```
   * Pack *run.sh* and *space-shuttle-demo.jar* into *space-shuttle-demo.tar.gz*
-  * Into this same folder, where *space-shuttle-demo.tar.gz* is stored (it should be located in *target*), please copy *manifest.json*
+  * Into the same folder, where *space-shuttle-demo.tar.gz* is stored (it should be located in *target*), please copy *manifest.json*, download model from https://s3.amazonaws.com/trustedanalytics/v0.7.4/models/spaceshuttleSVMmodel.mar and save as *model.mar*
   * You application package is complete
   ```
   <work-folder/>
   |-- manifest.json
+  |-- model.mar
   |-- space-shuttle-demo.tar.gz
         |-- run.sh
         |-- space-shuttle-demo.jar
@@ -71,6 +73,7 @@ To upload sample application 'space-shuttle-demo' to Platform you can use bash s
     |-- tap-cli
     |-- deploy.sh
     |-- manifest.json
+    |-- model.mar
     |-- space-shuttle-demo.tar.gz
           |-- run.sh
           |-- space-shuttle-demo.jar
@@ -96,19 +99,31 @@ Platform (TAP) using TAP CLI (Command Line Interface).
 ### Manual deployment
 **How to create needed services and push application manually:**
 * Login to TAP instance using TAP CLI:
-    `./<path-to-tap>/tap login --api <http://-https://-instance-address> --username <username> --password <password>`
+    `./<path-to-tap>/tap login --api http(s)://api.<instance-address> --username <username> --password <password>`
 
-* Create needed service (influxdb and gateway):
+* Create needed service (influxdb, gateway and scoring-engine):
     *This step can be done automatically by deploy.sh script*
 
     `./<path-to-tap>/tap service create --offering gateway --plan single --name space-shuttle-gateway`
 
     `./<path-to-tap>/tap service create --offering influxdb-088 --plan single-small --name space-shuttle-db`
 
-* Push application to TAP Platform
+    `./<path-to-tap>/tap service create --offering scoring-engine --plan single --name space-shuttle-scoring-engine`
+
+* Push model to space-shuttle-scoring-engine servie:
     *This step can be done automatically by deploy.sh script*
 
+    `curl -X POST --data-binary @model.mar http://space-shuttle-scoring-engine.<domain>/uploadMarBytes`
+
+* Push application to TAP Platform
+    *This step can be done automatically by deploy.sh script*
+    * run this in main directory of space-shuttle-demo application:
     `./<path-to-tap>/tap application push --archive-path space-shuttle-demo.tar.gz`
+
+* Push client to TAP Platform
+    *This step can be done automatically by deploy.sh script*
+  * go to *client* directory and then run:
+    `./<path-to-tap>/tap application push`
 
 * Now, your demo application should show up at `http://space-shuttle-demo.<your-TAP-instance.com>`
 ![](wikiimages/running-space-shuttle-demo.png)
@@ -135,8 +150,8 @@ If you want to install another demo application, you should change name of servi
     * To create the Scoring Engine service instance:
       * From the TAP console, navigate to **Services > Marketplace**. Select the “TAP Scoring Engine” service.
       * Type the name `space-shuttle-scoring-engine`
-      * Click **+ Add an extra parameter** and add the TAP Analytics Toolkit model url: `key: uri value: hdfs://path_to_model`.
       * Click the **Create new instance** button.
+      * When instance will be running then push model to space-shuttle-scoring-engine service: `curl -X POST --data-binary @model.mar http://space-shuttle-scoring-engine.{domain}/uploadMarBytes`
 
     **How to create and bind Scoring Engine using TAP CLI**
     * To create the Scoring Engine service instance:
@@ -154,9 +169,9 @@ To send data to Kafka through a gateway you can either (1) push space_shuttle_cl
 
 ## Local development
 The application can be run in different configurations:
- * ```dummy-input``` or ```kafka-input``` - use dummy input, if you would like to get randomly generated input data,
- * ```dummy-scoring``` or ```atk-scoring``` - use dummy scoring, if you would like to get random results from scoring engine (50% for being or not being an anomaly),
- * ```dummy-storage``` or ```influx-storage``` - use dummy storage (not recommended), if you want to use dummy storage (all data is destroyed, null returned for all reads).
+ * ```random-input``` or ```kafka-input``` - use random input, if you would like to get randomly generated input data,
+ * ```random-scoring``` or ```web-scoring``` - use random scoring, if you would like to get random results from scoring engine (50% for being or not being an anomaly),
+ * ```null-storage``` or ```influx-storage``` - use null storage (not recommended), if you want to use null storage (all data is destroyed, null returned for all reads).
 
 >This can be changed by modifying *run.sh*
 

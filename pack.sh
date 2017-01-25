@@ -29,20 +29,20 @@ mvn clean package -Dmaven.test.skip=true
 rm -rf ${PACKAGE_CATALOG}
 mkdir ${PACKAGE_CATALOG}
 
-# rename jar to be without version number 
+# rename jar to be without version number
 mv target/${MVN_JAR_NAME} target/${TARGET_JAR_NAME}
 
 echo "Create space-shuttle-demo.tar.gz package"
-tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo.tar.gz -C target ${TARGET_JAR_NAME} -C ../deploy run.sh deploy.sh manifest.json
+curl -o deploy/model.mar https://s3.amazonaws.com/trustedanalytics/v0.7.4/models/spaceshuttleSVMmodel.mar
+tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo.tar.gz -C target ${TARGET_JAR_NAME} -C ../deploy run.sh deploy.sh manifest.json model.mar
 
 echo "Create space-shuttle-demo-client.tar.gz package"
 mkdir -p client/vendor/zope
 pip install -r client/requirements.txt -t client/vendor
-touch client/vendor/zope/__init__.py # resolve missing init file issue 
+touch client/vendor/zope/__init__.py # resolve missing init file issue
 tar czvf ${PACKAGE_CATALOG}/space-shuttle-demo-client.tar.gz -C client/ vendor/ client_config.py manifest.json requirements.txt run.sh shuttle_scale_cut_val.csv space_shuttle_client.py
 
 # remove unused files
 rm -rf client/vendor
 
 echo "Package for $PROJECT_NAME project in version $VERSION has been prepared."
-
