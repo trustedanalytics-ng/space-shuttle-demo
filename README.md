@@ -1,7 +1,4 @@
-[![Build Status](https://travis-ci.org/trustedanalytics/space-shuttle-demo.svg)](https://travis-ci.org/trustedanalytics/space-shuttle-demo)
-[![Dependency Status](https://www.versioneye.com/user/projects/5723704eba37ce00464e061c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5723704eba37ce00464e061c)
-
-[a75eded2]: https://github.com/trustedanalytics/tap-cli "tap-cli documentation"
+[a75eded2]: https://github.com/trustedanalytics-ng/tap-cli "tap-cli documentation"
 
 
 # space-shuttle-demo
