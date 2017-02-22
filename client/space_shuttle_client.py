@@ -16,6 +16,8 @@
 
 import sys
 import thread
+import threading
+import SocketServer
 import time
 import argparse
 
@@ -70,6 +72,11 @@ def parse_arguments():
     return parser.parse_args()
 
 if __name__ == '__main__':
+
+    server = SocketServer.TCPServer(('0.0.0.0', 80), SocketServer.BaseRequestHandler)
+    th = threading.Thread(target=server.serve_forever)
+    th.daemon = True
+    th.start()
 
     log.startLogging(sys.stdout)
     args = parse_arguments()
